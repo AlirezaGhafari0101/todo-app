@@ -11,8 +11,17 @@
   },
   "dependencies": {
     "@fontsource/poppins": "^5.0.5",
+    "@reduxjs/toolkit": "^1.9.5",
+    "data-fns": "^1.1.0",
+    "framer-motion": "^10.13.0",
+    "node-sass": "^9.0.0",
     "react": "^18.2.0",
-    "react-dom": "^18.2.0"
+    "react-dom": "^18.2.0",
+    "react-hot-toast": "^2.4.1",
+    "react-icons": "^4.10.1",
+    "react-redux": "^8.1.1",
+    "sass": "^1.64.1",
+    "uuid": "^9.0.0"
   },
   "devDependencies": {
     "@types/react": "^18.2.15",
