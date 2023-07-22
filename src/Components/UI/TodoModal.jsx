@@ -1,25 +1,44 @@
 import React, { useState } from "react";
 import { MdOutlineClose } from "react-icons/md";
-import styles from "../../styles/modules/modal.module.scss";
 import Button from "./Button";
+import { useDispatch } from "react-redux";
+import { addTodo } from "../../slices/todoSlice";
+import { v4 as uuid } from "uuid";
 
-function Modal({onClose}) {
+import styles from "../../styles/modules/modal.module.scss";
+import { toast } from "react-hot-toast";
 
-  const [title, setTitle] = useState('')
-  const [status, setStatus] = useState('incomplete')
+function Modal({ onClose }) {
+  const [title, setTitle] = useState("");
+  const [status, setStatus] = useState("incomplete");
+
+  const dispatch = useDispatch();
 
   const titleChangeHandler = (e) => {
-    setTitle(e.target.value)
-  }
+    setTitle(e.target.value);
+  };
 
   const statusChangeHandler = (e) => {
-    setStatus(e.target.value)
-  }
-  
+    setStatus(e.target.value);
+  };
+
   const formSubmitHandler = (e) => {
-    e.preventDefault()
-    console.log(status, title);
-  }
+    e.preventDefault();
+    if (title && status) {
+      dispatch(
+        addTodo({
+          id: uuid(),
+          title,
+          status,
+          time: new Date().toLocaleString(),
+        })
+      );
+      toast.success('task added successfully!')
+    }else{
+      toast.error("title shouldn't be empty")
+    }
+    onClose()
+  };
 
   return (
     <div className={styles.wrapper}>
@@ -31,11 +50,21 @@ function Modal({onClose}) {
           <h1 className={styles.formTitle}>Add Task</h1>
           <label htmlFor="title">
             Title
-            <input type="text" id="title" value={title} onChange={titleChangeHandler}/>
+            <input
+              type="text"
+              id="title"
+              value={title}
+              onChange={titleChangeHandler}
+            />
           </label>
           <label htmlFor="status">
             Status
-            <select name="status" id="status" value={status} onChange={statusChangeHandler}>
+            <select
+              name="status"
+              id="status"
+              value={status}
+              onChange={statusChangeHandler}
+            >
               <option value="incomplete">Incomplete</option>
               <option value="complete">Complete</option>
             </select>
