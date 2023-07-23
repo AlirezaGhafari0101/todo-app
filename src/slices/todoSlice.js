@@ -1,7 +1,14 @@
 import { createSlice } from "@reduxjs/toolkit";
 
+const getInitialTodos = () => {
+  const localStorageTodoList = JSON.parse(localStorage.getItem("todo-list"));
+  if (localStorageTodoList) {
+    return localStorageTodoList;
+  }
+};
+
 const initialState = {
-  todoList: [],
+  todoList: getInitialTodos(),
 };
 
 const todoSlice = createSlice({
