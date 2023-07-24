@@ -4,9 +4,31 @@ import Button from "./Button";
 import { useDispatch } from "react-redux";
 import { addTodo, updateTodo } from "../../slices/todoSlice";
 import { v4 as uuid } from "uuid";
+import { toast } from "react-hot-toast";
+import { motion } from "framer-motion";
 
 import styles from "../../styles/modules/modal.module.scss";
-import { toast } from "react-hot-toast";
+
+const dropIn = {
+  hidden: {
+    opacity: 0,
+    transform: "scale(0.9)",
+  },
+  visible: {
+    transform: "scale(1)",
+    opacity: 1,
+    transition: {
+      duration: 0.1,
+      type: "spring",
+      damping: 25,
+      stiffness: 500,
+    },
+  },
+  exit: {
+    transform: "scale(0.9)",
+    opacity: 0,
+  },
+};
 
 function Modal({ onClose, type, todo }) {
   const [title, setTitle] = useState("");
@@ -41,7 +63,6 @@ function Modal({ onClose, type, todo }) {
             id: todo.id,
             title,
             status,
-           
           })
         );
         console.log(title, status);
@@ -64,11 +85,28 @@ function Modal({ onClose, type, todo }) {
   };
 
   return (
-    <div className={styles.wrapper}>
-      <div className={styles.container}>
-        <div className={styles.closeButton} onClick={onClose}>
+    <motion.div
+      className={styles.wrapper}
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      exit={{ opacity: 0 }}
+    >
+      <motion.div
+        className={styles.container}
+        variants={dropIn}
+        initial="hidden"
+        animate="visible"
+        exit="exit"
+      >
+        <motion.div
+          className={styles.closeButton}
+          onClick={onClose}
+          initial={{ top: 40, opacity: 0 }}
+          animate={{ top: -10, opacity: 1 }}
+          exit={{ top: 40, opacity: 0 }}
+        >
           <MdOutlineClose />
-        </div>
+        </motion.div>
         <form className={styles.form} onSubmit={formSubmitHandler}>
           <h1 className={styles.formTitle}>
             {type === "update" ? "update" : "add"} Task
@@ -103,8 +141,8 @@ function Modal({ onClose, type, todo }) {
             </Button>
           </div>
         </form>
-      </div>
-    </div>
+      </motion.div>
+    </motion.div>
   );
 }
 
