@@ -98,7 +98,7 @@ function Modal({ onClose, type, todo }) {
             <Button type="submit" variant="primary">
               {type === "update" ? "update" : "add"} Task
             </Button>
-            <Button type="button" variant="secondary">
+            <Button type="button" variant="secondary" onClick={onClose}>
               Cancel
             </Button>
           </div>
