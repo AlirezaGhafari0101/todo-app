@@ -30,8 +30,60 @@ const todoSlice = createSlice({
         );
       }
     },
+    deleteTodo(state, action) {
+      const localStorageTodoList = JSON.parse(
+        localStorage.getItem("todo-list")
+      );
+      const filteredTodos = localStorageTodoList.filter(
+        (todo) => todo.id !== action.payload.id
+      );
+      localStorage.setItem("todo-list", JSON.stringify(filteredTodos));
+      state.todoList = filteredTodos;
+      console.log(action);
+    },
+    updateTodo(state, action) {
+      const localStorageTodoList = JSON.parse(
+        localStorage.getItem("todo-list")
+      );
+      const updatedTodoIndex = localStorageTodoList.findIndex(
+        (todo) => todo.id === action.payload.id
+      );
+      let updatedTodoItem = localStorageTodoList[updatedTodoIndex];
+
+      if (updatedTodoItem) {
+        updatedTodoItem = {
+          ...updatedTodoItem,
+          title: action.payload.title,
+          status: action.payload.status,
+        };
+
+        localStorageTodoList[updatedTodoIndex] = updatedTodoItem;
+        state.todoList = localStorageTodoList;
+        localStorage.setItem("todo-list", JSON.stringify(localStorageTodoList));
+      }
+    },
+    doTodo(state, action) {
+      const localStorageTodoList = JSON.parse(
+        localStorage.getItem("todo-list")
+      );
+      const updatedTodoIndex = localStorageTodoList.findIndex(
+        (todo) => todo.id === action.payload.id
+      );
+      let updatedTodoItem = localStorageTodoList[updatedTodoIndex];
+      if (updatedTodoItem) {
+        updatedTodoItem = {
+          ...updatedTodoItem,
+          status:
+            updatedTodoItem.status === "complete" ? "incomplete" : "complete",
+        };
+
+        localStorageTodoList[updatedTodoIndex] = updatedTodoItem;
+        state.todoList = localStorageTodoList;
+        localStorage.setItem("todo-list", JSON.stringify(localStorageTodoList));
+      }
+    },
   },
 });
 
-export const { addTodo } = todoSlice.actions;
+export const { addTodo, deleteTodo, updateTodo, doTodo } = todoSlice.actions;
 export default todoSlice.reducer;
