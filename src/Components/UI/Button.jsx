@@ -9,9 +9,9 @@ function Button({children, variant , type, onClick}) {
   )
 }
 
-function SelectButton({children}) {
+function SelectButton({children, onFilter}) {
     return (
-    <select  className={`${styles.button} ${styles.button__select}`}>
+    <select  className={`${styles.button} ${styles.button__select}`} onChange={onFilter}>
         {children}
     </select>
     )

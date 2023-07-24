@@ -82,8 +82,21 @@ const todoSlice = createSlice({
         localStorage.setItem("todo-list", JSON.stringify(localStorageTodoList));
       }
     },
+    filterTodo(state, action) {
+      const localStorageTodoList = JSON.parse(
+        localStorage.getItem("todo-list")
+      );
+      let updatedTodos = localStorageTodoList.filter((todo) => {
+        if (action.payload.status === "all") {
+          return todo;
+        }
+        return todo.status === action.payload.status;
+      });
+      state.todoList = updatedTodos;
+    },
   },
 });
 
-export const { addTodo, deleteTodo, updateTodo, doTodo } = todoSlice.actions;
+export const { addTodo, deleteTodo, updateTodo, doTodo, filterTodo } =
+  todoSlice.actions;
 export default todoSlice.reducer;
